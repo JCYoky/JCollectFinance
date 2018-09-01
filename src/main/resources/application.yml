@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/myfinance?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: HikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+  application:
+    name: update-dividends
+mapping-config:
+  url-mapping:
+    "stocksURL": http://quote.eastmoney.com/stocklist.html
+    "dividendURL": http://vip.stock.finance.sina.com.cn/corp/go.php/vISSUE_ShareBonus/stockid/
+logging:
+  level:
+    me.hjc: info
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file: /Users/hjc/IdeaProjects/update-dividends/target/ud.log
