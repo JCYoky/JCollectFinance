@@ -14,7 +14,6 @@ public class ThreadPoolConfig extends DataSourceAutoConfiguration {
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.hikari")
     public DataSource hikariDataSource(){
-        HikariDataSource hikariDataSource = new HikariDataSource();
-        return hikariDataSource;
+        return new HikariDataSource();
     }
 }
