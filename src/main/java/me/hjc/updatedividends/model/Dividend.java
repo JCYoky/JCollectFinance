@@ -8,7 +8,7 @@ import lombok.Data;
  * 分红数据基本信息实体
  */
 @Data
-public class Dividend {
+public class Dividend implements IModel{
     int id;
     //股票名称
     String name;

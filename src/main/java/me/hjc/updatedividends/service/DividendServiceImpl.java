@@ -1,8 +1,10 @@
 package me.hjc.updatedividends.service;
 
 import lombok.extern.slf4j.Slf4j;
+import me.hjc.updatedividends.config.MappingConfig;
 import me.hjc.updatedividends.dao.IDividendDao;
 import me.hjc.updatedividends.model.Dividend;
+import me.hjc.updatedividends.model.IModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -16,34 +18,16 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class CrawlService {
+public class DividendServiceImpl implements IDividendService{
+
+    @Autowired
+    private MappingConfig mappingConfig;
 
     @Autowired
     private IDividendDao dividendDao;
 
-    public Map<String, String> stocks = new HashMap<>();
-
-    public Map<String, String> getStocksMap(String url) throws IOException {
-        Document doc = Jsoup.connect(url).get();
-        Elements elements = doc.getElementsByClass("qox").select("a[href]");
-        elements.forEach(element -> {
-            String innerText = element.text();
-            String[] codeAndName = innerText.split("\\(");
-            if (codeAndName.length == 2) {
-                String code = codeAndName[1].substring(0, 6);
-                if (code.startsWith("600") || code.startsWith("601")//沪市A股
-                        || code.startsWith("300")//创业板
-                        || code.startsWith("000") || code.startsWith("001")//深市A股
-                        || code.startsWith("002")) {//中小板
-                    stocks.put(code, codeAndName[0]);
-                }
-            }
-        });
-        return stocks;
-    }
-
-    @Async("executor")
-    public void updateDividends(String url, String code, String name) throws IOException, InterruptedException {
+    void upsertDividends(String code, String name) throws IOException, InterruptedException {
+        String url = mappingConfig.getURL("dividendURL");
         Document doc;
         Elements elements = null;
         System.out.println("Processing stock: " + code + "...");
@@ -90,18 +74,24 @@ public class CrawlService {
                 dividend.setCode(code);
                 dividend.setName(name);
                 dividend.setAd(ad);
-                dividend.setRs(rs);
-                dividend.setFs(fs);
-                dividend.setIt(it);
+                dividend.setRs(Double.valueOf(rs));
+                dividend.setFs(Double.valueOf(fs));
+                dividend.setIt(Double.valueOf(it));
                 dividend.setSch(sch);
                 dividend.setEdd(edd);
                 dividend.setRd(rd);
                 dividend.setRsod(rsod);
+                Double dyr = 0d;
+                dividend.setDyr(dyr);
                 dividendDao.saveDividend(dividend);
             }
             log.info("更新了" + (size - count) + "条股票" + name + " " + code + "的分红数据");
-        } else {
-//            log.info("不需更新" + code);
         }
+    }
+
+    @Override
+    @Async("executor")
+    public void upsert(String code, String name) throws IOException, InterruptedException {
+        upsertDividends(code, name);
     }
 }

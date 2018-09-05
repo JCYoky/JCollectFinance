@@ -2,53 +2,46 @@ package me.hjc.updatedividends.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import me.hjc.updatedividends.config.MappingConfig;
-import me.hjc.updatedividends.service.CrawlService;
+import me.hjc.updatedividends.service.DividendServiceImpl;
+import me.hjc.updatedividends.service.IDividendService;
+import me.hjc.updatedividends.service.IStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 @Slf4j
 public class UpdateData implements CommandLineRunner {
 
     @Autowired
-    MappingConfig mappingConfig;
+    IStockService stockService;
 
     @Autowired
-    CrawlService crawlService;
+    IDividendService dividendService;
 
-//    @Scheduled(cron = "0 0 3 * * ?")
     @Override
-    public void run(String... args) throws Exception {
-        long timeMillis = System.currentTimeMillis();
-        String stocksURL = mappingConfig.getURL("stocksURL");
-        String dividendURL = mappingConfig.getURL("dividendURL");
-        Map<String, String> stocksMap;
+    public void run(String... args) {
+        Map<String, String> stocksMap = null;
         try {
-             stocksMap = crawlService.getStocksMap(stocksURL);
-        } catch (Exception e) {
-            log.error("获取股票列表数据异常，重试中...：" + stocksURL);
-            stocksMap = crawlService.getStocksMap(stocksURL);
+            stocksMap = stockService.getStocksMap();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        if (stocksMap != null){
-            stocksMap.forEach((key, value) -> {
-                try {
-                    crawlService.updateDividends(dividendURL, key, value);
-                } catch (IOException e) {
-                    log.error(new Date(System.currentTimeMillis()) + "IOException");
-                } catch (InterruptedException e) {
-                    log.error(new Date(System.currentTimeMillis()) + "InterruptedException");
-                }
-            });
-            log.info(new Date(System.currentTimeMillis()) + "：更新股票分红数据成功！");
-            System.out.println((System.currentTimeMillis() - timeMillis) / 1000);
-        } else {
-            log.error("获取股票列表数据异常..." + stocksURL);
+        if (Objects.requireNonNull(stocksMap).size() == 0) {
+            log.error("获取股票列表数据异常");
+            return;
         }
+        stocksMap.forEach((key, value) -> {
+            try {
+                dividendService.upsert(key, value);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
