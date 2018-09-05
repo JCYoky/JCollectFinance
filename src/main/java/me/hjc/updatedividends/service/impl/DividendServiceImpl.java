@@ -1,10 +1,11 @@
-package me.hjc.updatedividends.service;
+package me.hjc.updatedividends.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import me.hjc.updatedividends.config.MappingConfig;
 import me.hjc.updatedividends.dao.IDividendDao;
 import me.hjc.updatedividends.model.Dividend;
 import me.hjc.updatedividends.model.IModel;
+import me.hjc.updatedividends.service.IDividendService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class DividendServiceImpl implements IDividendService{
+public class DividendServiceImpl implements IDividendService {
 
     @Autowired
     private MappingConfig mappingConfig;

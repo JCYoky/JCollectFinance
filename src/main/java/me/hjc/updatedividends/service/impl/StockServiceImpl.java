@@ -1,8 +1,9 @@
-package me.hjc.updatedividends.service;
+package me.hjc.updatedividends.service.impl;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import lombok.extern.slf4j.Slf4j;
 import me.hjc.updatedividends.config.MappingConfig;
+import me.hjc.updatedividends.service.IStockService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
