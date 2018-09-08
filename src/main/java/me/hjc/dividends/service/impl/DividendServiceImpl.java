@@ -48,6 +48,7 @@ public class DividendServiceImpl implements IDividendService {
         }
         if (elements.size() == 0 || elements.size() % 9 != 0) {
             System.out.println("股票：" + code + " 数据错误！");
+            return;
         }
         int size = elements.size() / 9;
         int count = 0;
