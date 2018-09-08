@@ -1,4 +1,4 @@
-package me.hjc.updatedividends;
+package me.hjc.dividends;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

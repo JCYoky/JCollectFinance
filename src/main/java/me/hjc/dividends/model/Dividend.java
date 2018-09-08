@@ -1,4 +1,4 @@
-package me.hjc.updatedividends.model;
+package me.hjc.dividends.model;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import lombok.Data;
  * 分红数据基本信息实体
  */
 @Data
-public class Dividend implements IModel{
+public class Dividend {
     int id;
     //股票名称
     String name;

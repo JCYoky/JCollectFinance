@@ -1,4 +1,4 @@
-package me.hjc.updatedividends.config;
+package me.hjc.dividends.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

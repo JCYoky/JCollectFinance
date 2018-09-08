@@ -1,6 +1,6 @@
-package me.hjc.updatedividends.dao;
+package me.hjc.dividends.dao;
 
-import me.hjc.updatedividends.model.Dividend;
+import me.hjc.dividends.model.Dividend;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 

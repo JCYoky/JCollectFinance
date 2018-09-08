@@ -1,15 +1,15 @@
-package me.hjc.updatedividends.controller;
+package me.hjc.dividends.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import me.hjc.updatedividends.service.IDividendService;
-import me.hjc.updatedividends.service.IStockService;
+import me.hjc.dividends.model.StockCode;
+import me.hjc.dividends.service.IDividendService;
+import me.hjc.dividends.service.IStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Objects;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -22,14 +22,9 @@ public class UpdateData implements CommandLineRunner {
     IDividendService dividendService;
 
     @Override
-    public void run(String... args) throws IOException {
-        Map<String, String> stocksMap;
-        stocksMap = stockService.getStocksMap();
-        if (Objects.requireNonNull(stocksMap).size() == 0) {
-            log.error("获取股票列表数据异常");
-            return;
-        }
-        stocksMap.forEach(this::upsertDividend);
+    public void run(String... args) {
+        List<StockCode> stocks = stockService.getStocks();
+        stocks.forEach(stockCode -> upsertDividend(stockCode.getCode(), stockCode.getName()));
     }
 
     private void upsertDividend(String key, String value) {

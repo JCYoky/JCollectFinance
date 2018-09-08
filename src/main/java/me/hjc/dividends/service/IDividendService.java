@@ -1,4 +1,4 @@
-package me.hjc.updatedividends.service;
+package me.hjc.dividends.service;
 
 import java.io.IOException;
 

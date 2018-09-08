@@ -1,11 +1,10 @@
-package me.hjc.updatedividends.service.impl;
+package me.hjc.dividends.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import me.hjc.updatedividends.config.MappingConfig;
-import me.hjc.updatedividends.dao.IDividendDao;
-import me.hjc.updatedividends.model.Dividend;
-import me.hjc.updatedividends.model.IModel;
-import me.hjc.updatedividends.service.IDividendService;
+import me.hjc.dividends.config.MappingConfig;
+import me.hjc.dividends.dao.IDividendDao;
+import me.hjc.dividends.model.Dividend;
+import me.hjc.dividends.service.IDividendService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -14,8 +13,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @Slf4j

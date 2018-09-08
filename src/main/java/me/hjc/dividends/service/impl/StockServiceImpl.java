@@ -1,9 +1,10 @@
-package me.hjc.updatedividends.service.impl;
+package me.hjc.dividends.service.impl;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import lombok.extern.slf4j.Slf4j;
-import me.hjc.updatedividends.config.MappingConfig;
-import me.hjc.updatedividends.service.IStockService;
+import me.hjc.dividends.config.MappingConfig;
+import me.hjc.dividends.dao.IStockDao;
+import me.hjc.dividends.model.StockCode;
+import me.hjc.dividends.service.IStockService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -20,6 +22,9 @@ public class StockServiceImpl implements IStockService {
 
     @Autowired
     MappingConfig mappingConfig;
+
+    @Autowired
+    IStockDao stockDao;
 
     @Override
     public Map<String, String> getStocksMap() throws IOException {
@@ -48,5 +53,10 @@ public class StockServiceImpl implements IStockService {
             });
         }
         return stocks;
+    }
+
+    @Override
+    public List<StockCode> getStocks() {
+        return stockDao.stocks();
     }
 }

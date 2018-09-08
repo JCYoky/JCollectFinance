@@ -1,4 +1,4 @@
-package me.hjc.updatedividends.config;
+package me.hjc.dividends.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
