@@ -1,4 +1,4 @@
-package me.hjc.dividends.calculate;
+package me.hjc.dividends.util;
 
 public class CalculateUtils {
     private CalculateUtils(){}

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 
+import static me.hjc.dividends.util.CountUtils.setTotal;
+
 @Component
 @Slf4j
 public class UpdateData implements CommandLineRunner {
@@ -24,6 +26,7 @@ public class UpdateData implements CommandLineRunner {
     @Override
     public void run(String... args) {
         List<StockCode> stocks = stockService.getStocks();
+        setTotal(stocks.size());
         stocks.forEach(stockCode -> upsertDividend(stockCode.getCode(), stockCode.getName()));
     }
 

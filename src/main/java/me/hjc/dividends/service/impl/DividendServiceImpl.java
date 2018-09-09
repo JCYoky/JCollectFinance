@@ -1,10 +1,12 @@
 package me.hjc.dividends.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import me.hjc.dividends.util.CalculateUtils;
 import me.hjc.dividends.config.MappingConfig;
 import me.hjc.dividends.dao.IDividendDao;
 import me.hjc.dividends.model.Dividend;
 import me.hjc.dividends.service.IDividendService;
+import me.hjc.dividends.util.CountUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -29,6 +31,7 @@ public class DividendServiceImpl implements IDividendService {
         Document doc;
         Elements elements = null;
         System.out.println("Processing stock: " + code + "...");
+        rate();
         Thread.sleep(5000);
         try {
             doc = Jsoup.connect(url + code + ".phtml").get();
@@ -86,6 +89,11 @@ public class DividendServiceImpl implements IDividendService {
             }
             log.info("更新了" + (size - count) + "条股票" + name + " " + code + "的分红数据");
         }
+    }
+
+    private void rate() {
+        CountUtils.addCount();
+        System.out.println("processing: " + CountUtils.getCount() + "/" + CountUtils.getTotal());
     }
 
     @Override
