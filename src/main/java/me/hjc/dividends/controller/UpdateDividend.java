@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 
-import static me.hjc.dividends.util.CountUtils.setTotal;
-
 @Component
 @Slf4j
 public class UpdateDividend implements CommandLineRunner {
@@ -29,6 +27,7 @@ public class UpdateDividend implements CommandLineRunner {
         List<StockCode> stocks = stockService.getStocks();
         CountUtils.setTotal(stocks.size());
         stocks.forEach(stockCode -> upsertDividend(stockCode.getCode().substring(0, 6), stockCode.getName()));
+        log.info("更新分红数据成功");
     }
 
     private void upsertDividend(String key, String value) {
