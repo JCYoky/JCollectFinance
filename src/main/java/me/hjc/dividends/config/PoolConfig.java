@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-public class ThreadPoolConfig extends DataSourceAutoConfiguration {
+public class PoolConfig extends DataSourceAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.hikari")

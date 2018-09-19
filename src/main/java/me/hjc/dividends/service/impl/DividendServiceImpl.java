@@ -3,6 +3,7 @@ package me.hjc.dividends.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import me.hjc.dividends.config.MappingConfig;
 import me.hjc.dividends.dao.IDividendDao;
+import me.hjc.dividends.dao.ITradeDailyDao;
 import me.hjc.dividends.model.Dividend;
 import me.hjc.dividends.service.IDividendService;
 import me.hjc.dividends.util.CountUtils;
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -24,8 +26,11 @@ public class DividendServiceImpl implements IDividendService {
 
     @Autowired
     private IDividendDao dividendDao;
+    @Autowired
+    private ITradeDailyDao tradeDailyDao;
 
-    void upsertDividends(String code, String name) throws IOException, InterruptedException {
+    void upsertDividends(String originalCode, String name) throws IOException, InterruptedException {
+        String code = originalCode.substring(0, 6);
         String url = mappingConfig.getURL("dividendURL");
         Document doc;
         Elements elements = null;
@@ -33,7 +38,7 @@ public class DividendServiceImpl implements IDividendService {
         rate();
         Thread.sleep(5000);
         try {
-            doc = Jsoup.connect(url + code + ".phtml").get();
+            doc = Jsoup.connect(url + code.substring(0, 6) + ".phtml").get();
             elements = doc.getElementsByAttributeValue("id", "sharebonus_1").select("td");
         } catch (Exception e) {
             System.out.println("请求股票：" + code + " 异常！将进行重试...");
@@ -60,6 +65,7 @@ public class DividendServiceImpl implements IDividendService {
             log.error("查询股票" + code + "的分红次数失败");
         }
         if (size > count || count == 0) {
+//        if (true) {
             dividendDao.deleteDividendByCode(code);
             Dividend dividend;
             for (int i = 0; i < size; i++) {
@@ -83,6 +89,9 @@ public class DividendServiceImpl implements IDividendService {
                 dividend.setRd(rd);
                 dividend.setRsod(rsod);
                 Double dyr = 0d;
+                if (!edd.equals("--")) {
+                    dyr = this.calculateDyr(Double.valueOf(it), originalCode, edd);
+                }
                 dividend.setDyr(dyr);
                 dividendDao.saveDividend(dividend);
             }
@@ -93,6 +102,12 @@ public class DividendServiceImpl implements IDividendService {
     private void rate() {
         CountUtils.addCount();
         System.out.println("processing: " + CountUtils.getCount() + "/" + CountUtils.getTotal());
+    }
+
+    private double calculateDyr(double it, String code, String edd) {
+        return Optional
+                .ofNullable(tradeDailyDao.getCloseByDate(code, edd.replace("-", "")))
+                .map(p -> ((int) ((it / (Double.valueOf(p) * 10)) * 10000 + 0.5)) / 10000.0).orElse(0d);
     }
 
     @Override

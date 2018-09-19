@@ -4,8 +4,6 @@ import me.hjc.dividends.model.Dividend;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 /**
  * @author hjc
  *
@@ -18,9 +16,9 @@ public interface IDividendDao {
     /**
      * 插入分红数据
      * */
-    @Insert("insert into dividend (name, code, ad, sch, rs, fs, it, edd, rd, rsod)" +
+    @Insert("insert into dividend (name, code, ad, sch, rs, fs, dyr, it, edd, rd, rsod)" +
             "values" +
-            "(#{name}, #{code}, #{ad}, #{sch}, #{rs}, #{fs}, #{it}, #{edd}, #{rd}, #{rsod})")
+            "(#{name}, #{code}, #{ad}, #{sch}, #{rs}, #{fs}, #{dyr}, #{it}, #{edd}, #{rd}, #{rsod})")
     void saveDividend(Dividend dividend);
 
     /**
@@ -34,10 +32,4 @@ public interface IDividendDao {
      * */
     @Delete("delete from dividend where code = #{code}")
     void deleteDividendByCode(@Param("code") String code);
-
-    /**
-     * 根据股票代码和起始日期获取起始日期之后的股票分红记录
-     * */
-    @Select("select * from dividend where code = #{code} and sch = '实施' and ad > #{start_date}")
-    List<Dividend> getDividends(@Param("code") String code,@Param("start_date") String startDate);
 }

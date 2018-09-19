@@ -26,7 +26,7 @@ public class UpdateDividend implements CommandLineRunner {
     public void run(String... args) {
         List<StockCode> stocks = stockService.getStocks();
         CountUtils.setTotal(stocks.size());
-        stocks.forEach(stockCode -> upsertDividend(stockCode.getCode().substring(0, 6), stockCode.getName()));
+        stocks.forEach(stockCode -> upsertDividend(stockCode.getCode(), stockCode.getName()));
         log.info("更新分红数据成功");
     }
 
