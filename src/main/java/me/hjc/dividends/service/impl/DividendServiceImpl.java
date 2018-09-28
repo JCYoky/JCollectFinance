@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -114,5 +115,10 @@ public class DividendServiceImpl implements IDividendService {
     @Async("executor")
     public void upsert(String code, String name) throws IOException, InterruptedException {
         upsertDividends(code, name);
+    }
+
+    @Override
+    public Optional<List<Dividend>> getDividendByCode(String code) {
+        return Optional.ofNullable(dividendDao.getDividendByCode(code));
     }
 }
