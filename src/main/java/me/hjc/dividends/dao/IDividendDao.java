@@ -4,6 +4,8 @@ import me.hjc.dividends.model.Dividend;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author hjc
  *
@@ -26,6 +28,12 @@ public interface IDividendDao {
      * */
     @Select("select count(1) from dividend where code = #{code}")
     int countDividend(@Param("code") String code);
+
+    /**
+     * 根据股票代码获取股票的分红历史数据
+     * */
+    @Select("select * from dividend where code = #{code}")
+    List<Dividend> getDividendByCode(@Param("code") String code);
 
     /**
      * 根据股票代码删除股票分红记录
