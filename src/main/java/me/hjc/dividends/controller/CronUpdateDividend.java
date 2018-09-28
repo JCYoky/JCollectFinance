@@ -6,7 +6,7 @@ import me.hjc.dividends.service.IDividendService;
 import me.hjc.dividends.service.IStockService;
 import me.hjc.dividends.util.CountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class UpdateDividend implements CommandLineRunner {
+public class CronUpdateDividend {
 
     @Autowired
     IStockService stockService;
@@ -22,8 +22,8 @@ public class UpdateDividend implements CommandLineRunner {
     @Autowired
     IDividendService dividendService;
 
-    @Override
-    public void run(String... args) {
+    @Scheduled(cron = "0 0 0 1 * ?")
+    public void run() {
         List<StockCode> stocks = stockService.getStocks();
         CountUtils.setTotal(stocks.size());
         stocks.forEach(stockCode -> upsertDividend(stockCode.getCode(), stockCode.getName()));
