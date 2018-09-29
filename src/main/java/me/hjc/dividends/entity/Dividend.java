@@ -1,4 +1,4 @@
-package me.hjc.dividends.model;
+package me.hjc.dividends.entity;
 
 import lombok.Data;
 
