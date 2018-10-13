@@ -21,13 +21,6 @@ public class StockDividendRest {
     @Autowired
     IDividendService dividendService;
 
-    @GetMapping("/test")
-    public ResponseEntity<?> test() {
-        String result = "hello world";
-        ResponseEntity.ok(result);
-        return ResponseEntity.ok(result);
-    }
-
     @GetMapping("/dividend")
     public ResponseEntity<?> dividendsList(@Valid @Pattern(regexp = RegConst.CODE_REG) @RequestParam(value = "code") String code) {
         return dividendService.getDividendByCode(code).map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
