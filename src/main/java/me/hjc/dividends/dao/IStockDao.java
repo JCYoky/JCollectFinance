@@ -1,6 +1,6 @@
 package me.hjc.dividends.dao;
 
-import me.hjc.dividends.model.StockCode;
+import me.hjc.dividends.entity.StockCode;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;

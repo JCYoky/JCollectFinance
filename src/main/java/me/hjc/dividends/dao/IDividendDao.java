@@ -1,6 +1,6 @@
 package me.hjc.dividends.dao;
 
-import me.hjc.dividends.model.Dividend;
+import me.hjc.dividends.entity.Dividend;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +32,7 @@ public interface IDividendDao {
     /**
      * 根据股票代码获取股票的分红历史数据
      * */
-    @Select("select * from dividend where code = #{code}")
+    @Select("select * from dividend where code = #{code} order by ad")
     List<Dividend> getDividendByCode(@Param("code") String code);
 
     /**

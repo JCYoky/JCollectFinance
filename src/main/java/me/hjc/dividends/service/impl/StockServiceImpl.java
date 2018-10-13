@@ -3,7 +3,7 @@ package me.hjc.dividends.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import me.hjc.dividends.config.MappingConfig;
 import me.hjc.dividends.dao.IStockDao;
-import me.hjc.dividends.model.StockCode;
+import me.hjc.dividends.entity.StockCode;
 import me.hjc.dividends.service.IStockService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

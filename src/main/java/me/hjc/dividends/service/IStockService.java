@@ -1,6 +1,6 @@
 package me.hjc.dividends.service;
 
-import me.hjc.dividends.model.StockCode;
+import me.hjc.dividends.entity.StockCode;
 
 import java.io.IOException;
 import java.util.List;

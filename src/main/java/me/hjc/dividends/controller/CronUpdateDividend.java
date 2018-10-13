@@ -1,7 +1,7 @@
 package me.hjc.dividends.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import me.hjc.dividends.model.StockCode;
+import me.hjc.dividends.entity.StockCode;
 import me.hjc.dividends.service.IDividendService;
 import me.hjc.dividends.service.IStockService;
 import me.hjc.dividends.util.CountUtils;

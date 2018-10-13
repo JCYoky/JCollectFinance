@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.hjc.dividends.config.MappingConfig;
 import me.hjc.dividends.dao.IDividendDao;
 import me.hjc.dividends.dao.ITradeDailyDao;
-import me.hjc.dividends.model.Dividend;
+import me.hjc.dividends.entity.Dividend;
 import me.hjc.dividends.service.IDividendService;
 import me.hjc.dividends.util.CountUtils;
 import org.jsoup.Jsoup;
