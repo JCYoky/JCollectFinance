@@ -8,5 +8,10 @@ import lombok.Data;
 @Data
 public class StockCode {
     String code;
+    String symbol;
     String name;
+    String area;
+    String industry;
+    String market;
+    String listDate;
 }
