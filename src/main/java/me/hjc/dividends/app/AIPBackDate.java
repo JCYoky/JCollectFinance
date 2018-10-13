@@ -6,12 +6,13 @@ import me.hjc.dividends.entity.Dividend;
 import me.hjc.dividends.entity.TradeDaily;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Service
 public class AIPBackDate {
 
     /**
