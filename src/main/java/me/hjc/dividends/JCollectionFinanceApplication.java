@@ -8,9 +8,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAsync
 @EnableScheduling
 @SpringBootApplication
-public class UpdateDividendsApplication {
+public class JCollectionFinanceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UpdateDividendsApplication.class, args);
+        SpringApplication.run(JCollectionFinanceApplication.class, args);
     }
 }
