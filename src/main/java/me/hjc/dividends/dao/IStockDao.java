@@ -1,6 +1,6 @@
 package me.hjc.dividends.dao;
 
-import me.hjc.dividends.entity.StockCode;
+import me.hjc.dividends.entity.Stock;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -11,5 +11,5 @@ import java.util.List;
 @Component
 public interface IStockDao {
     @Select("select * from stock_list")
-    List<StockCode> stocks();
+    List<Stock> stocks();
 }
