@@ -1,6 +1,6 @@
 package me.hjc.finance.util;
 
-public class CountUtils {
+public final class CountUtils {
     private CountUtils(){}
 
     private static volatile int COUNT = 0;

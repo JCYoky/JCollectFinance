@@ -1,6 +1,6 @@
 package me.hjc.finance.dao;
 
-import me.hjc.finance.entity.TradeDaily;
+import me.hjc.finance.entity.TradeDailyEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -11,7 +11,6 @@ import java.util.List;
 @Mapper
 @Component
 public interface ITradeDailyDao {
-
     /**
      * 获取股票收盘价
      * @param code 股票代码 000001.SZ
@@ -24,8 +23,8 @@ public interface ITradeDailyDao {
      * 获取股票日K交易数据
      * @param code 股票代码 000001.SZ
      * */
-    @Select("select trade_date, open, high, close from trade_daily where code = #{code} order by trade_date")
-    List<TradeDaily> getTradeList(@Param("code") String code);
+    @Select("select trade_date, open, high, low, close from trade_daily where code = #{code} order by trade_date")
+    List<TradeDailyEntity> getTradeList(@Param("code") String code);
 
     /**
      * 获取股票日k交易数据
@@ -36,8 +35,8 @@ public interface ITradeDailyDao {
     @Select("select trade_date, open, high, close " +
             "from trade_daily " +
             "where code = #{code} " +
-            "and trade_date > #{startDate}" +
-            "and trade_date < #{endDate}" +
+            "and trade_date >= #{startDate}" +
+            "and trade_date <= #{endDate}" +
             "order by trade_date")
-    List<TradeDaily> getTradeList(@Param("code") String code, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<TradeDailyEntity> getTradeList(@Param("code") String code, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }

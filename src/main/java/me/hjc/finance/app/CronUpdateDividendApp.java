@@ -1,7 +1,7 @@
-package me.hjc.finance.controller;
+package me.hjc.finance.app;
 
 import lombok.extern.slf4j.Slf4j;
-import me.hjc.finance.entity.Stock;
+import me.hjc.finance.entity.StockEntity;
 import me.hjc.finance.service.IDividendService;
 import me.hjc.finance.service.IStockService;
 import me.hjc.finance.util.CountUtils;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class CronUpdateDividend {
+public class CronUpdateDividendApp {
 
     @Autowired
     IStockService stockService;
@@ -22,17 +22,20 @@ public class CronUpdateDividend {
     @Autowired
     IDividendService dividendService;
 
+    /**
+     * 每月1日零点执行
+     * */
     @Scheduled(cron = "0 0 0 1 * ?")
     public void run() {
-        List<Stock> stocks = stockService.getStocks();
-        CountUtils.setTotal(stocks.size());
-        stocks.forEach(stock -> upsertDividend(stock.getCode(), stock.getName()));
+        List<StockEntity> stockEntities = stockService.getStocks();
+        CountUtils.setTotal(stockEntities.size());
+        stockEntities.forEach(stock -> upsertDividend(stock.getCode(), stock.getName()));
         log.info("更新分红数据成功");
     }
 
-    private void upsertDividend(String key, String value) {
+    private void upsertDividend(String code, String name) {
         try {
-            dividendService.upsert(key, value);
+            dividendService.upsert(code, name);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

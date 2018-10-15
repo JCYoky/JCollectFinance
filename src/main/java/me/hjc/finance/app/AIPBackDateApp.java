@@ -1,10 +1,12 @@
 package me.hjc.finance.app;
 
 import me.hjc.finance.dao.IDividendDao;
+import me.hjc.finance.dao.IStockDao;
 import me.hjc.finance.dao.ITradeDailyDao;
 import me.hjc.finance.entity.BackDateEntity;
-import me.hjc.finance.entity.Dividend;
-import me.hjc.finance.entity.TradeDaily;
+import me.hjc.finance.entity.DividendEntity;
+import me.hjc.finance.entity.StockEntity;
+import me.hjc.finance.entity.TradeDailyEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,8 @@ public class AIPBackDateApp {
     IDividendDao dividendDao;
     @Autowired
     ITradeDailyDao tradeDailyDao;
+    @Autowired
+    IStockDao stockDao;
 
     /**
      * 股票定投回溯计算：
@@ -34,9 +38,10 @@ public class AIPBackDateApp {
      * Automatic Investment Plan Back Date
      */
     public void aipBackDate(String code) {
-        List<TradeDaily> tradeList = tradeDailyDao.getTradeList(code);
-        List<Dividend> dividends = dividendDao.getDividendByCode(code.substring(0, 6));
-        System.out.println(aipBackDateCalculation(tradeList, dividends).toString());
+        StockEntity stockEntity = stockDao.getStock(code);
+        List<TradeDailyEntity> tradeList = tradeDailyDao.getTradeList(code);
+        List<DividendEntity> dividendEntities = dividendDao.getDividendByCode(code.substring(0, 6));
+        System.out.println(this.calculation(tradeList, dividendEntities).toString());
     }
 
     /**
@@ -46,14 +51,14 @@ public class AIPBackDateApp {
      * Automatic Investment Plan Back Date
      */
     public void aipBackDate(String code, String startDate, String endDate) {
-        List<TradeDaily> tradeList = tradeDailyDao.getTradeList(code, startDate, endDate);
-        List<Dividend> dividends = dividendDao.getDividendByCode(code.substring(0, 6));
-        System.out.println(aipBackDateCalculation(tradeList, dividends).toString());
+        List<TradeDailyEntity> tradeList = tradeDailyDao.getTradeList(code, startDate, endDate);
+        List<DividendEntity> dividendEntities = dividendDao.getDividendByCode(code.substring(0, 6));
+        System.out.println(this.calculation(tradeList, dividendEntities).toString());
     }
 
-    private BackDateEntity aipBackDateCalculation(List<TradeDaily> tradeList, List<Dividend> dividends) {
-        List<String> eddList = dividends.stream()
-                .map(Dividend::getEdd)
+    private BackDateEntity calculation(List<TradeDailyEntity> tradeList, List<DividendEntity> dividendEntities) {
+        List<String> eddList = dividendEntities.stream()
+                .map(DividendEntity::getEdd)
                 .map(edd -> edd.replace("-", ""))
                 .collect(Collectors.toList());
 
@@ -75,10 +80,10 @@ public class AIPBackDateApp {
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         //遍历日K交易数据
         for (int i = 0; i < tradeList.size(); i++) {
-            TradeDaily trade = tradeList.get(i);
+            TradeDailyEntity trade = tradeList.get(i);
             //分红情况的处理
             if (dividendFlag < eddList.size() && trade.getTradeDate().equals(eddList.get(dividendFlag))) {
-                double dividend = ((totalShare / 10) * dividends.get(dividendFlag).getIt());
+                double dividend = ((totalShare / 10) * dividendEntities.get(dividendFlag).getIt());
                 double eddOpenPrice = Double.valueOf(trade.getOpen());
                 totalShare += (dividend / eddOpenPrice);
                 dividendFlag++;

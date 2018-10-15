@@ -6,7 +6,7 @@ import lombok.Data;
  * 股票代码实体
  * */
 @Data
-public class Stock {
+public class StockEntity {
     String code;
     String symbol;
     String name;

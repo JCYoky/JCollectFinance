@@ -1,6 +1,6 @@
 package me.hjc.finance.dao;
 
-import me.hjc.finance.entity.Dividend;
+import me.hjc.finance.entity.DividendEntity;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -18,10 +18,10 @@ public interface IDividendDao {
     /**
      * 插入分红数据
      * */
-    @Insert("insert into dividend (name, code, ad, sch, rs, fs, dyr, it, edd, rd, rsod)" +
+    @Insert("insert into dividendEntity (name, code, ad, sch, rs, fs, dyr, it, edd, rd, rsod)" +
             "values" +
             "(#{name}, #{code}, #{ad}, #{sch}, #{rs}, #{fs}, #{dyr}, #{it}, #{edd}, #{rd}, #{rsod})")
-    void saveDividend(Dividend dividend);
+    void saveDividend(DividendEntity dividendEntity);
 
     /**
      * 根据股票代码获取分红记录条数
@@ -33,7 +33,7 @@ public interface IDividendDao {
      * 根据股票代码获取股票的分红历史数据
      * */
     @Select("select * from dividend where code = #{code} order by ad")
-    List<Dividend> getDividendByCode(@Param("code") String code);
+    List<DividendEntity> getDividendByCode(@Param("code") String code);
 
     /**
      * 根据股票代码删除股票分红记录

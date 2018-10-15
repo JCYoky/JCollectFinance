@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.hjc.finance.config.MappingConfig;
 import me.hjc.finance.dao.IDividendDao;
 import me.hjc.finance.dao.ITradeDailyDao;
-import me.hjc.finance.entity.Dividend;
+import me.hjc.finance.entity.DividendEntity;
 import me.hjc.finance.service.IDividendService;
 import me.hjc.finance.util.CountUtils;
 import org.jsoup.Jsoup;
@@ -68,7 +68,7 @@ public class DividendServiceImpl implements IDividendService {
         if (size > count || count == 0) {
 //        if (true) {
             dividendDao.deleteDividendByCode(code);
-            Dividend dividend;
+            DividendEntity dividendEntity;
             for (int i = 0; i < size; i++) {
                 String ad = elements.get(i * 9).text();
                 String rs = elements.get(i * 9 + 1).text();
@@ -78,23 +78,23 @@ public class DividendServiceImpl implements IDividendService {
                 String edd = elements.get(i * 9 + 5).text();
                 String rd = elements.get(i * 9 + 6).text();
                 String rsod = elements.get(i * 9 + 7).text();
-                dividend = new Dividend();
-                dividend.setCode(code);
-                dividend.setName(name);
-                dividend.setAd(ad);
-                dividend.setRs(Double.valueOf(rs));
-                dividend.setFs(Double.valueOf(fs));
-                dividend.setIt(Double.valueOf(it));
-                dividend.setSch(sch);
-                dividend.setEdd(edd);
-                dividend.setRd(rd);
-                dividend.setRsod(rsod);
+                dividendEntity = new DividendEntity();
+                dividendEntity.setCode(code);
+                dividendEntity.setName(name);
+                dividendEntity.setAd(ad);
+                dividendEntity.setRs(Double.valueOf(rs));
+                dividendEntity.setFs(Double.valueOf(fs));
+                dividendEntity.setIt(Double.valueOf(it));
+                dividendEntity.setSch(sch);
+                dividendEntity.setEdd(edd);
+                dividendEntity.setRd(rd);
+                dividendEntity.setRsod(rsod);
                 Double dyr = 0d;
                 if (!edd.equals("--")) {
                     dyr = this.calculateDyr(Double.valueOf(it), originalCode, edd);
                 }
-                dividend.setDyr(dyr);
-                dividendDao.saveDividend(dividend);
+                dividendEntity.setDyr(dyr);
+                dividendDao.saveDividend(dividendEntity);
             }
             log.info("更新了" + (size - count) + "条股票" + name + " " + code + "的分红数据");
         }
@@ -118,7 +118,7 @@ public class DividendServiceImpl implements IDividendService {
     }
 
     @Override
-    public Optional<List<Dividend>> getDividendByCode(String code) {
+    public Optional<List<DividendEntity>> getDividendByCode(String code) {
         return Optional.ofNullable(dividendDao.getDividendByCode(code));
     }
 }
