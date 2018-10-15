@@ -14,7 +14,7 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
   application:
-    name: update-dividends
+    name: update-finance
 mapping-config:
   url-mapping:
     "stocksURL": http://quote.eastmoney.com/stocklist.html
@@ -24,4 +24,4 @@ logging:
     me.hjc: info
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file: /Users/hjc/IdeaProjects/update-dividends/target/ud.log
+  file: /Users/hjc/IdeaProjects/update-finance/target/ud.log
