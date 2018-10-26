@@ -51,7 +51,7 @@ public class AIPBackDateApp {
      * Automatic Investment Plan Back Date
      */
     public void aipBackDate(String code, String startDate, String endDate) {
-        List<TradeDailyEntity> tradeList = tradeDailyDao.getTradeList(code, startDate, endDate);
+        List<TradeDailyEntity> tradeList = tradeDailyDao.getTradeListPeriod(code, startDate, endDate);
         List<DividendEntity> dividendEntities = dividendDao.getDividendByCode(code.substring(0, 6));
         System.out.println(this.calculation(tradeList, dividendEntities).toString());
     }

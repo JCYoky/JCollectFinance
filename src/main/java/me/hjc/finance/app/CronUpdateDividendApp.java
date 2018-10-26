@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -27,15 +28,18 @@ public class CronUpdateDividendApp {
      * */
     @Scheduled(cron = "0 0 0 1 * ?")
     public void run() {
-        List<StockEntity> stockEntities = stockService.getStocks();
-        CountUtils.setTotal(stockEntities.size());
-        stockEntities.forEach(stock -> upsertDividend(stock.getCode(), stock.getName()));
+        log.info("开始更新股票分红数据...，执行时间：" + new Date(System.currentTimeMillis()));
+        stockService.getStocks().map(stockEntities -> {
+            CountUtils.setTotal(stockEntities.size());
+            stockEntities.forEach(stockEntity -> this.upsertDividend(stockEntity.getCode(), stockEntity.getName()));
+            return null;
+        });
         log.info("更新分红数据成功");
     }
 
     private void upsertDividend(String code, String name) {
         try {
-            dividendService.upsert(code, name);
+            dividendService.upsertDividends(code, name);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

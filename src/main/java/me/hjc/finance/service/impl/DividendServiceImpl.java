@@ -30,7 +30,8 @@ public class DividendServiceImpl implements IDividendService {
     @Autowired
     private ITradeDailyDao tradeDailyDao;
 
-    void upsertDividends(String originalCode, String name) throws IOException, InterruptedException {
+    @Async(value = "executor")
+    public void upsertDividends(String originalCode, String name) throws IOException, InterruptedException {
         String code = originalCode.substring(0, 6);
         String url = mappingConfig.getURL("dividendURL");
         Document doc;
@@ -100,21 +101,21 @@ public class DividendServiceImpl implements IDividendService {
         }
     }
 
+    /**
+     * 跟踪执行进度
+     * */
     private void rate() {
         CountUtils.addCount();
         System.out.println("processing: " + CountUtils.getCount() + "/" + CountUtils.getTotal());
     }
 
+    /**
+     * 计算股息率
+     * */
     private double calculateDyr(double it, String code, String edd) {
         return Optional
                 .ofNullable(tradeDailyDao.getCloseByDate(code, edd.replace("-", "")))
                 .map(p -> ((int) ((it / (Double.valueOf(p) * 10)) * 10000 + 0.5)) / 10000.0).orElse(0d);
-    }
-
-    @Override
-    @Async("executor")
-    public void upsert(String code, String name) throws IOException, InterruptedException {
-        upsertDividends(code, name);
     }
 
     @Override

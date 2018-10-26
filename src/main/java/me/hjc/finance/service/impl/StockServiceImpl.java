@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -21,7 +22,12 @@ public class StockServiceImpl implements IStockService {
     IStockDao stockDao;
 
     @Override
-    public List<StockEntity> getStocks() {
-        return stockDao.stocks();
+    public Optional<List<StockEntity>> getStocks() {
+        return Optional.ofNullable(stockDao.stocks());
+    }
+
+    @Override
+    public Optional<StockEntity> getStock(String code) {
+        return Optional.ofNullable(stockDao.getStock(code));
     }
 }

@@ -12,3 +12,7 @@
 
 ### TO DO:
 - 股息率的排名接口
+
+### Truncated
+- This Project has bean canceled, separated into micro-services like jc-dividend
+- Those micro-services will be built on Spring Cloud ecosystem.

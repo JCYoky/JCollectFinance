@@ -32,11 +32,11 @@ public interface ITradeDailyDao {
      * @param startDate 起始日期 20100101
      * @param endDate 截止日期 20180101
      * */
-    @Select("select trade_date, open, high, close " +
+    @Select("select trade_date, open, high, low, close " +
             "from trade_daily " +
             "where code = #{code} " +
             "and trade_date >= #{startDate}" +
             "and trade_date <= #{endDate}" +
             "order by trade_date")
-    List<TradeDailyEntity> getTradeList(@Param("code") String code, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<TradeDailyEntity> getTradeListPeriod(@Param("code") String code, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }

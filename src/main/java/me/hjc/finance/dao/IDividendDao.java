@@ -18,7 +18,7 @@ public interface IDividendDao {
     /**
      * 插入分红数据
      * */
-    @Insert("insert into dividendEntity (name, code, ad, sch, rs, fs, dyr, it, edd, rd, rsod)" +
+    @Insert("insert into dividend (name, code, ad, sch, rs, fs, dyr, it, edd, rd, rsod)" +
             "values" +
             "(#{name}, #{code}, #{ad}, #{sch}, #{rs}, #{fs}, #{dyr}, #{it}, #{edd}, #{rd}, #{rsod})")
     void saveDividend(DividendEntity dividendEntity);
